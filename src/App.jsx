@@ -70,6 +70,7 @@ function App() {
           <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="/path/ai-basics" element={<PathPage />} />
           <Route path="/topic/:id" element={<TopicPage />} />
+          <Route path="/topics/:id" element={<TopicPage />} />
         </Routes>
       </main>
 
