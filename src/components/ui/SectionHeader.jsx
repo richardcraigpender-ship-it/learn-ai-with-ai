@@ -1,3 +1,5 @@
+import './SectionHeader.css'
+
 function SectionHeader({ eyebrow, title, description, className = '' }) {
   return (
     <div className={`section-header ${className}`.trim()}>

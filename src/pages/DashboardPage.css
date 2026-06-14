@@ -1,0 +1,67 @@
+.dashboard-page,
+.section-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.section-stack h2 {
+  margin: 0;
+  font-size: 1.6rem;
+  line-height: 1.2;
+  color: #1f2937;
+}
+
+.app-grid {
+  display: grid;
+  gap: 24px;
+}
+
+.app-grid.two {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+
+.muted {
+  margin: 0 0 10px;
+  color: #6b7280;
+  line-height: 1.6;
+}
+
+.ui-progress {
+  width: 100%;
+  height: 10px;
+  background: #e5e7eb;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.ui-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+  border-radius: 999px;
+  transition: width 0.3s ease;
+}
+
+
+@media (max-width: 900px) {
+  .app-grid.two {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .ui-card {
+    padding: 18px;
+    border-radius: 14px;
+  }
+
+  .section-stack {
+    gap: 18px;
+  }
+
+  .section-stack h2 {
+    font-size: 1.35rem;
+  }
+
+}

@@ -1,83 +1,85 @@
-import { createContext, useContext, useEffect, useState } from 'react'
-import { paths } from '../data/paths'
-import { topics } from '../data/topics'
+import { createContext, useContext, useEffect, useMemo, useState } from "react"
 
 const ProgressContext = createContext(null)
-
-const STORAGE_KEY = 'learn-ai-with-ai-progress-v1'
-
-const defaultProgress = {
-  topics: {},
-  paths: {},
-  streak: { current: 0, lastActiveDate: null }
-}
+const STORAGE_KEY = "learn-ai-with-ai-progress-v2"
 
 export function ProgressProvider({ children }) {
-  const [progress, setProgress] = useState(defaultProgress)
+  const [progress, setProgress] = useState(() => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY)
+      return saved ? JSON.parse(saved) : { lessons: {}, topics: {} }
+    } catch {
+      return { lessons: {}, topics: {} }
+    }
+  })
 
   useEffect(() => {
-    try {
-      const stored = localStorage.getItem(STORAGE_KEY)
-      if (stored) {
-        setProgress(JSON.parse(stored))
-      }
-    } catch {
-    }
-  }, [])
-
-  useEffect(() => {
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(progress))
-    } catch {
-    }
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(progress))
   }, [progress])
 
-  const markLessonComplete = (topicId, lessonIndex, totalLessons = 3) => {
-    setProgress(prev => {
-      const prevTopic = prev.topics[topicId] || { completedLessons: 0 }
-      const completedLessons = Math.max(prevTopic.completedLessons, lessonIndex + 1)
-
-      const updatedTopics = {
+  const markLessonDone = (topicId, lessonId, xp = 10) => {
+    setProgress((prev) => ({
+      ...prev,
+      lessons: {
+        ...prev.lessons,
+        [topicId]: {
+          ...(prev.lessons[topicId] || {}),
+          [lessonId]: true,
+        },
+      },
+      topics: {
         ...prev.topics,
-        [topicId]: { completedLessons }
-      }
+        [topicId]: {
+          ...(prev.topics[topicId] || { completedLessons: 0, totalXp: 0 }),
+          totalXp: (prev.topics[topicId]?.totalXp || 0) + xp,
+        },
+      },
+    }))
+  }
 
-      const updatedPaths = { ...prev.paths }
-
-      paths.forEach(path => {
-        const completedTopicCount = path.topicIds.filter(id => {
-          const saved = updatedTopics[id]
-          const topicMeta = topics.find(topic => topic.id === id)
-          if (!topicMeta) return false
-          return saved && saved.completedLessons >= topicMeta.lessons
-        }).length
-
-        updatedPaths[path.id] = {
-          completedTopics: completedTopicCount
-        }
-      })
-
-      const today = new Date().toISOString().slice(0, 10)
-      let current = prev.streak.current || 0
-
-      if (prev.streak.lastActiveDate === today) {
-      } else {
-        current = prev.streak.lastActiveDate ? current + 1 : 1
-      }
-
+  const unmarkLessonDone = (topicId, lessonId, xp = 10) => {
+    setProgress((prev) => {
+      const topicLessons = { ...(prev.lessons[topicId] || {}) }
+      delete topicLessons[lessonId]
       return {
-        topics: updatedTopics,
-        paths: updatedPaths,
-        streak: { current, lastActiveDate: today }
+        ...prev,
+        lessons: {
+          ...prev.lessons,
+          [topicId]: topicLessons,
+        },
+        topics: {
+          ...prev.topics,
+          [topicId]: {
+            ...(prev.topics[topicId] || { completedLessons: 0, totalXp: 0 }),
+            totalXp: Math.max(0, (prev.topics[topicId]?.totalXp || 0) - xp),
+          },
+        },
       }
     })
   }
 
-  return (
-    <ProgressContext.Provider value={{ progress, markLessonComplete }}>
-      {children}
-    </ProgressContext.Provider>
-  )
+  const isLessonDone = (topicId, lessonId) => !!progress.lessons?.[topicId]?.[lessonId]
+
+  const getTopicProgress = (topicId) => {
+    const topicLessons = progress.lessons?.[topicId] || {}
+    const completedLessons = Object.keys(topicLessons).length
+    return {
+      completedLessons,
+      totalLessons: 0,
+      totalXp: progress.topics?.[topicId]?.totalXp || 0,
+    }
+  }
+
+  const value = useMemo(() => ({
+    progress,
+    markLessonDone,
+    unmarkLessonDone,
+    isLessonDone,
+    getTopicProgress,
+    totalXp: Object.values(progress.topics || {}).reduce((sum, t) => sum + (t.totalXp || 0), 0),
+  }), [progress])
+
+  return <ProgressContext.Provider value={value}>{children}</ProgressContext.Provider>
 }
 
 export function useProgress() {

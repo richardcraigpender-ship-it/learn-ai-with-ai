@@ -6,53 +6,69 @@ import Button from '../components/ui/Button'
 import Card from '../components/ui/Card'
 import SectionHeader from '../components/ui/SectionHeader'
 import PageHero from '../components/ui/PageHero'
-
+import '../pages/DashboardPage.css'
 
 function DashboardPage() {
-  const { progress } = useProgress()
+  const { progress, getTopicProgress } = useProgress()
 
-  const aiBasicsPath = paths.find(path => path.id === 'ai-basics')
-  const pathProgress = progress.paths['ai-basics'] || { completedTopics: 0 }
+  const aiBasicsPath = paths.find((path) => path.id === 'ai-basics')
+  const pathTopicIds = aiBasicsPath?.topics || []
 
-  const startedTopics = topics.filter(
-    topic => (progress.topics[topic.id]?.completedLessons || 0) > 0
-  )
+  const startedTopics = topics.filter((topic) => {
+    const topicProgress = getTopicProgress(topic.id)
+    return topicProgress.completedLessons > 0
+  })
 
-  const completedTopics = topics.filter(
-    topic => (progress.topics[topic.id]?.completedLessons || 0) >= topic.lessons
-  )
+  const completedTopics = topics.filter((topic) => {
+    const topicProgress = getTopicProgress(topic.id)
+    return topicProgress.completedLessons >= topic.lessons
+  })
 
-  const completionPercent = Math.round(
-    (pathProgress.completedTopics / aiBasicsPath.topicIds.length) * 100
-  )
+  const completedPathTopics = pathTopicIds.filter((topicId) => {
+    const topic = topics.find((t) => t.id === topicId)
+    if (!topic) return false
+
+    const topicProgress = getTopicProgress(topic.id)
+    return topicProgress.completedLessons >= topic.lessons
+  }).length
+
+  const completionPercent =
+    pathTopicIds.length > 0
+      ? Math.round((completedPathTopics / pathTopicIds.length) * 100)
+      : 0
 
   return (
     <div className="section-stack">
- <PageHero
-  eyebrow="My Learning"
-  title="Track your progress and keep moving"
-  description="See your active path, continue where you left off, and stay motivated with visible progress across your mini-classes."
-  meta={[
-    `${startedTopics.length} topics started`,
-    `${completedTopics.length} topics completed`,
-    `${progress.streak.current || 0} day streak`,
-  ]}
->
-  <Button to="/path/ai-basics">Resume AI Basics Path</Button>
-  <Button to="/browse" variant="secondary">
-    Browse topics
-  </Button>
-</PageHero>
+      <PageHero
+        eyebrow="My Learning"
+        title="Track your progress and keep moving"
+        description="See your active path, continue where you left off, and stay motivated with visible progress across your mini-classes."
+        meta={[
+          `${startedTopics.length} topics started`,
+          `${completedTopics.length} topics completed`,
+          `${progress.streak?.current || 0} day streak`,
+        ]}
+      >
+        <Button to="/path/ai-basics">Resume AI Basics Path</Button>
+        <Button to="/browse" variant="secondary">
+          Browse topics
+        </Button>
+      </PageHero>
 
       <section className="app-grid two">
         <Card as="article" className="ui-card">
-          <h2>{aiBasicsPath.title}</h2>
-          <p className="muted">{aiBasicsPath.description}</p>
+          <h2>{aiBasicsPath?.title || 'AI Basics Path'}</h2>
           <p className="muted">
-            Progress: {pathProgress.completedTopics} of {aiBasicsPath.topicIds.length} topics complete
+            {aiBasicsPath?.description || 'The essential starting path for anyone new to AI.'}
+          </p>
+          <p className="muted">
+            Progress: {completedPathTopics} of {pathTopicIds.length} topics complete
           </p>
           <div className="ui-progress" style={{ margin: '12px 0 14px' }}>
-            <div className="ui-progress-fill" style={{ width: `${completionPercent}%` }}></div>
+            <div
+              className="ui-progress-fill"
+              style={{ width: `${completionPercent}%` }}
+            ></div>
           </div>
           <Link to="/path/ai-basics" className="card-link">
             Resume path
@@ -63,7 +79,7 @@ function DashboardPage() {
           <h2>Your stats</h2>
           <p className="muted">Topics started: {startedTopics.length}</p>
           <p className="muted">Topics completed: {completedTopics.length}</p>
-          <p className="muted">Current streak: {progress.streak.current || 0} days</p>
+          <p className="muted">Current streak: {progress.streak?.current || 0} days</p>
         </Card>
       </section>
 
@@ -75,8 +91,9 @@ function DashboardPage() {
           </div>
         ) : (
           <div className="app-grid two">
-            {startedTopics.map(topic => {
-              const completedLessons = progress.topics[topic.id]?.completedLessons || 0
+            {startedTopics.map((topic) => {
+              const topicProgress = getTopicProgress(topic.id)
+              const completedLessons = topicProgress.completedLessons
               const status =
                 completedLessons >= topic.lessons ? 'Completed' : 'In progress'
 

@@ -9,7 +9,7 @@ import './HomePage.css'
 function HomePage() {
   const { progress } = useProgress()
   const featuredTopics = topics.slice(0, 6)
-  const completedTopics = topics.filter(
+  const completedTopicsCount = topics.filter(
     topic => (progress.topics[topic.id]?.completedLessons || 0) >= topic.lessons
   ).length
 
@@ -19,6 +19,7 @@ function HomePage() {
         <div className="hero-copy">
           <p className="eyebrow">Beginner-friendly AI learning</p>
           <h1>Learn AI in small lessons you can actually finish.</h1>
+         
           <p className="hero-text">
             Learn what AI is, how to use it well, and where it can go wrong — through
             short, practical mini-classes designed for real beginners.
@@ -30,39 +31,38 @@ function HomePage() {
             Explore AI Basics Path
           </Button>
           </div>
-
           <div className="hero-stats">
             <div className="stat-card">
               <strong>6</strong>
-              <span>Starter topics</span>
+              <span>Starter topic</span>
             </div>
             <div className="stat-card">
               <strong>3</strong>
               <span>Lessons per topic</span>
             </div>
             <div className="stat-card">
-              <strong>{completedTopics}</strong>
-              <span>Topics completed so far</span>
+              <strong>{completedTopicsCount}</strong>
+              <span>topic completed so far</span>
             </div>
           </div>
         </div>
 
         <div className="hero-panel">
           <div className="mock-card">
-            <p className="mock-label">AI Basics Path</p>
-            <h3>Your next step</h3>
-            <p>Build practical AI understanding one topic at a time.</p>
-            <div className="mock-progress">
-              <div className="mock-progress-bar"></div>
-            </div>
-            <p className="mock-small">
-              Progress: {progress.paths['ai-basics']?.completedTopics || 0} of 6 topics complete
-            </p>
-          </div>
+  <p className="mock-label">AI Basics Path</p>
+  <h3>Your next step</h3>
+  <p>Build practical AI understanding one topic at a time.</p>
+  <div className="mock-progress">
+    <div className="mock-progress-bar"></div>
+  </div>
+  <p className="mock-small">
+    Start with the AI Basics Path and complete topics one by one.
+  </p>
+</div>
         </div>
       </section>
 
-      <section className="trust-strip">
+     <Card><section className="trust-strip">
         <div className="trust-item">
           <strong>Short lessons</strong>
           <span>No long overwhelming courses to finish.</span>
@@ -79,14 +79,16 @@ function HomePage() {
           <strong>Clear progress</strong>
           <span>Track what you started and what to do next.</span>
         </div>
-      </section>
+      </section></Card>
 
       <section className="benefits-section">
-        <SectionHeader
-          eyebrow="Why it works"
-          title="A simpler way to start learning AI"
-          description="Instead of pushing you into one huge course, the platform helps you start with one small topic, build confidence fast, and keep going without overload."
-        />
+        <Card>
+          <SectionHeader
+            eyebrow="Why it works"
+            title="A simpler way to start learning AI"
+            description="Instead of pushing you into one huge course, the platform helps you start with one small topic, build confidence fast, and keep going without overload."
+          />
+        </Card>
 
         <div className="benefits-grid">
           <Card as="article" className="info-card">
@@ -108,7 +110,7 @@ function HomePage() {
           <Card as="article" className="info-card">
             <h3>Build confidence before going deeper</h3>
             <p>
-              Start with free fundamentals, then move into deeper beginner topics when you
+              Start with free fundamentals, then move into deeper beginner topic when you
               are ready for the next step.
             </p>
           </Card>
@@ -125,7 +127,7 @@ function HomePage() {
           </p>
         </div>
 
-        <div className="topics-grid">
+        <div className="topic-grid">
           {featuredTopics.map(topic => {
             const completedLessons = progress.topics[topic.id]?.completedLessons || 0
             const status =
@@ -211,7 +213,7 @@ function HomePage() {
           <Card as="article" className="faq-card">
             <h3>Do I need technical experience?</h3>
             <p>
-              No. The first topics are designed for complete beginners and focus on practical
+              No. The first topic are designed for complete beginners and focus on practical
               understanding before anything advanced.
             </p>
           </Card>
@@ -227,7 +229,7 @@ function HomePage() {
           <Card as="article" className="faq-card">
             <h3>How long does each topic take?</h3>
             <p>
-              Most topics are designed to take around 20 to 30 minutes in total, broken into
+              Most topic are designed to take around 20 to 30 minutes in total, broken into
               3 smaller lessons.
             </p>
           </Card>

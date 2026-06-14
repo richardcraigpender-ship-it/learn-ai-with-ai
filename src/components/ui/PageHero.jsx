@@ -1,5 +1,6 @@
 import Badge from './Badge'
 import Card from './Card'
+import './PageHero.css'
 
 function PageHero({
   eyebrow,

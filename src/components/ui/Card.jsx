@@ -1,7 +1,9 @@
-function Card({ children, className = '', as = 'div' }) {
-  const Component = as
+import './Card.css'
 
-  return <Component className={`ui-card ${className}`.trim()}>{children}</Component>
+export default function Card({ as: Component = "div", className = "", children, ...props }) {
+  return (
+    <Component className={`card ${className}`.trim()} {...props}>
+      {children}
+    </Component>
+  )
 }
-
-export default Card

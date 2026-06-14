@@ -7,7 +7,7 @@ import TopicPage from './pages/TopicPage'
 import Footer from './components/Footer'
 import './App.css'
 
-function App() {
+function App() {8
   return (
     <div className="app-shell">
       <header className="topbar">
@@ -68,9 +68,9 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/browse" element={<BrowsePage />} />
           <Route path="/dashboard" element={<DashboardPage />} />
-          <Route path="/path/ai-basics" element={<PathPage />} />
+          <Route path="/path/:id" element={<PathPage />} />
           <Route path="/topic/:id" element={<TopicPage />} />
-          <Route path="/topics/:id" element={<TopicPage />} />
+          <Route path="/topic/:topicId" element={<TopicPage />} />
         </Routes>
       </main>
 
