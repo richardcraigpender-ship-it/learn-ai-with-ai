@@ -1,67 +1,58 @@
+/* Button.css - Updated with blue/purple borders and fade effect */
+
 .ui-button {
-  display: inline-flex;
-  align-items: center;
+  min-height: 48px;
   justify-content: center;
-  gap: 8px;
-  min-height: 44px;
-  padding: 12px 18px;
-  border-radius: 999px;
-  border: 1px solid transparent;
-  text-decoration: none;
-  font-size: 0.95rem;
-  font-weight: 700;
-  line-height: 1;
+  width: 100%;
+  min-width: 0;
+  padding: 14px 24px;
+  border-radius: 12px;
+  border: 2px solid #4a90e2;
+  background: white;
+  font-weight: 600;
+  line-height: 1.35;
+  color: #111827;
   cursor: pointer;
-  transition:
-    background-color 0.2s ease,
-    color 0.2s ease,
-    border-color 0.2s ease,
-    transform 0.15s ease,
-    box-shadow 0.2s ease;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.1);
 }
 
 .ui-button:hover {
-  transform: translateY(-1px);
+  transform: translateY(-2px);
+  border-color: #9b59b6;
+  box-shadow: 0 8px 24px rgba(118, 75, 162, 0.2);
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.05), rgba(118, 75, 162, 0.05));
 }
 
 .ui-button:active {
   transform: translateY(0);
 }
 
-.ui-button:focus-visible {
-  outline: none;
-  box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.18);
-}
-
-.ui-button-primary {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: #ffffff;
-  box-shadow: 0 10px 20px rgba(102, 126, 234, 0.22);
-}
-
-.ui-button-primary:hover {
-  box-shadow: 0 14px 24px rgba(102, 126, 234, 0.28);
-}
-
-.ui-button-secondary {
-  background: #ffffff;
-  color: #374151;
-  border-color: #d1d5db;
-}
-
-.ui-button-secondary:hover {
-  background: #f9fafb;
-  border-color: #9ca3af;
-}
-
 .ui-button[disabled],
-.ui-button[aria-disabled='true'] {
-  opacity: 0.6;
+.ui-button[aria-disabled="true"] {
+  opacity: 0.65;
   pointer-events: none;
+  cursor: not-allowed;
 }
 
-@media (max-width: 640px) {
-  .ui-button {
-    width: 100%;
-  }
+.ui-button--primary {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+  border: 2px solid #667eea;
+}
+
+.ui-button--primary:hover {
+  background: linear-gradient(135deg, #764ba2, #667eea);
+  box-shadow: 0 8px 24px rgba(118, 75, 162, 0.4);
+}
+
+.ui-button--secondary {
+  background: white;
+  color: #111827;
+  border: 2px solid #4a90e2;
+}
+
+.ui-button--secondary:hover {
+  background: rgba(102, 126, 234, 0.05);
+  border-color: #9b59b6;
 }

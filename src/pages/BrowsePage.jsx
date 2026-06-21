@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom"
 import { topics } from "../data/topics"
 import { useProgress } from "../context/ProgressContext"
 import Card from "../components/ui/Card"
@@ -40,7 +39,9 @@ export default function BrowsePage() {
                     <div className="browse-page__card-header">
                       <div>
                         <h3>{topic.title}</h3>
-                        <p className="browse-page__card-subtitle">{topic.description}</p>
+                        <p className="browse-page__card-subtitle">
+                        {topic.description || topic.summary || topic.notes}
+                      </p>
                       </div>
                       <span className={`browse-page__difficulty ${topic.difficulty}`} />
                     </div>
@@ -63,9 +64,9 @@ export default function BrowsePage() {
                       {topic.estimatedTime && <span className="browse-page__time">~{topic.estimatedTime} min</span>}
                     </div>
 
-                    <Link to={`/topic/${topic.slug}`}>
-                      <Button variant="primary">Start {topic.title}</Button>
-                    </Link>
+                  <Button to={`/topic/${topic.slug}`} variant="primary">
+                  Start {topic.title}
+                </Button>
                   </Card>
                 )
               })}

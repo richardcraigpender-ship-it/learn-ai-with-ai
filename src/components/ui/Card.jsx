@@ -1,9 +1,40 @@
-import './Card.css'
+import { Link } from 'react-router-dom'
+import './Button.css'
 
-export default function Card({ as: Component = "div", className = "", children, ...props }) {
+function Button({
+  children,
+  variant = 'primary',
+  to,
+  href,
+  onClick,
+  type = 'button',
+  className = '',
+}) {
+  const classes = `ui-button ${
+    variant === 'secondary' ? 'ui-button-secondary' : 'ui-button-primary'
+  } ${className}`.trim()
+
+  if (to) {
+    return (
+      <Link to={to} className={classes}>
+        {children}
+      </Link>
+    )
+  }
+
+  if (href) {
+    return (
+      <a href={href} className={classes}>
+        {children}
+      </a>
+    )
+  }
+
   return (
-    <Component className={`card ${className}`.trim()} {...props}>
+    <button type={type} onClick={onClick} className={classes}>
       {children}
-    </Component>
+    </button>
   )
 }
+
+export default Button

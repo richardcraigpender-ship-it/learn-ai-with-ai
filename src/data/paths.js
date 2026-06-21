@@ -9,7 +9,15 @@ export const paths = [
       "what-is-ai",
       "prompting-basics",
       "ai-safety-basics",
-      "how-ai-thinks"
+      "how-ai-is-made",
+      "how-ai-thinks",
+      "ai-everyday-tasks",
+      "ai-history",
+      "ai-bias",
+      "ai-for-work",
+      "ai-for-creativity",
+      "prompting-for-study",
+      "future-of-ai"
     ]
   }
 ]

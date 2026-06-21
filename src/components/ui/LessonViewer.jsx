@@ -1,29 +1,46 @@
-import React, { useState, useEffect } from "react";
-import { lessons } from "../../data/lessons";
+import React, { useState, useEffect } from "react"
+import { lessons } from "../../data/lessons"
+import { useProgress } from "../../context/ProgressContext"
 
 const LessonViewer = ({ topicId }) => {
-  const topicLessons = lessons.filter((lesson) => lesson.topicId === topicId)
+  const topicEntry = lessons.find((entry) => entry.topicId === topicId)
+  const topicLessons = topicEntry?.lessons || []
+  const { markLessonDone, isLessonDone, getTopicProgress } = useProgress()
   const [currentLessonIndex, setCurrentLessonIndex] = useState(0)
-  const [completedLessons, setCompletedLessons] = useState([])
   const [quizAnswers, setQuizAnswers] = useState({})
   const [showResult, setShowResult] = useState(false)
-  const [totalXp, setTotalXp] = useState(0)
-
   const currentLesson = topicLessons[currentLessonIndex]
   const isLastLesson = currentLessonIndex === topicLessons.length - 1
   const isFirstLesson = currentLessonIndex === 0
+  const isCompleted = currentLesson ? isLessonDone(topicId, currentLesson.id) : false
+  const topicProgress = getTopicProgress(topicId)
+  const totalXp = topicProgress.totalXp
 
   useEffect(() => {
     setCurrentLessonIndex(0)
-    setCompletedLessons([])
     setQuizAnswers({})
     setShowResult(false)
-    setTotalXp(0)
   }, [topicId])
 
-  if (!topicLessons.length) {
-    return <div className="lesson-viewer__empty">No lessons found for this topic.</div>
+  if (!topicLessons.length) return <div className="lesson-viewer__empty">No lessons found for this topic.</div>
+  if (!currentLesson) return null
+
+  const handleMarkComplete = () => {
+    if (!currentLesson || isCompleted) {
+      setShowResult(true)
+      return
+    }
+
+    if (currentLesson.type === "exercise" || currentLesson.type === "quiz") {
+      const selectedAnswer = quizAnswers[currentLesson.id]
+      if (selectedAnswer === undefined) return
+    }
+
+    markLessonDone(topicId, currentLesson.id, currentLesson.xp || 0)
+    setShowResult(true)
   }
+
+  const isExercise = currentLesson.type === "exercise" || currentLesson.type === "quiz"
 
   return (
     <div className="lesson-viewer">
@@ -36,64 +53,64 @@ const LessonViewer = ({ topicId }) => {
       </div>
 
       <div className="lesson-viewer__body">
-        {currentLesson.type === "content" && <p>{currentLesson.content}</p>}
-
-        {currentLesson.type === "exercise" && (
+        {currentLesson.type === "content" && (
           <div>
-            <p>{currentLesson.instruction}</p>
-            {currentLesson.exampleAnswer && (
-              <div className="lesson-viewer__example">
-                <strong>Example answer:</strong>
-                <p>{currentLesson.exampleAnswer}</p>
-              </div>
+            <p>{currentLesson.content}</p>
+            {currentLesson.keyTakeaways?.length > 0 && (
+              <ul>
+                {currentLesson.keyTakeaways.map((item, index) => <li key={index}>{item}</li>)}
+              </ul>
             )}
           </div>
         )}
 
-        {currentLesson.type === "quiz" && (
+        {isExercise && (
           <div>
             <p>{currentLesson.question}</p>
             <div className="lesson-viewer__options">
-              {currentLesson.options?.map((option, index) => (
-                <button
-                  key={index}
-                  onClick={() => setQuizAnswers({ ...quizAnswers, [currentLesson.id]: index })}
-                >
-                  {option}
-                </button>
-              ))}
+              {currentLesson.options?.map((option, index) => {
+                const selectedAnswer = quizAnswers[currentLesson.id]
+                const isSelected = selectedAnswer === index
+                const hasAnswered = selectedAnswer !== undefined
+                return (
+                  <button
+                    key={index}
+                    type="button"
+                    className={isSelected ? "is-selected" : ""}
+                    disabled={hasAnswered}
+                    onClick={() => setQuizAnswers((prev) => ({ ...prev, [currentLesson.id]: index }))}
+                  >
+                    {option}
+                  </button>
+                )
+              })}
             </div>
-            {showResult && (
+            {showResult && quizAnswers[currentLesson.id] !== undefined && (
               <p>
                 {quizAnswers[currentLesson.id] === currentLesson.answer ? "Correct" : "Try again"}
               </p>
+            )}
+            {currentLesson.explanation && showResult && quizAnswers[currentLesson.id] !== undefined && (
+              <p>{currentLesson.explanation}</p>
             )}
           </div>
         )}
       </div>
 
       <div className="lesson-viewer__footer">
-        <button disabled={isFirstLesson} onClick={() => setCurrentLessonIndex((i) => i - 1)}>
+        <button type="button" disabled={isFirstLesson} onClick={() => { setCurrentLessonIndex((i) => i - 1); setShowResult(false) }}>
           Previous
         </button>
+
         <button
-          onClick={() => {
-            setCompletedLessons((prev) =>
-              prev.includes(currentLesson.id) ? prev : [...prev, currentLesson.id]
-            )
-            setTotalXp((xp) => xp + (currentLesson.xp || 0))
-            setShowResult(true)
-          }}
+          type="button"
+          disabled={isCompleted || (isExercise && quizAnswers[currentLesson.id] === undefined)}
+          onClick={handleMarkComplete}
         >
-          Mark complete
+          {isCompleted ? "Completed" : "Mark complete"}
         </button>
-        <button
-          disabled={isLastLesson}
-          onClick={() => {
-            setCurrentLessonIndex((i) => i + 1)
-            setShowResult(false)
-          }}
-        >
+
+        <button type="button" disabled={isLastLesson} onClick={() => { setCurrentLessonIndex((i) => i + 1); setShowResult(false) }}>
           Next
         </button>
       </div>

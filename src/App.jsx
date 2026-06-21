@@ -1,13 +1,13 @@
-import { Routes, Route, NavLink, Link } from 'react-router-dom'
-import HomePage from './pages/HomePage'
-import BrowsePage from './pages/BrowsePage'
-import DashboardPage from './pages/DashboardPage'
-import PathPage from './pages/PathPage'
-import TopicPage from './pages/TopicPage'
-import Footer from './components/Footer'
-import './App.css'
+import { Routes, Route, NavLink, Link } from "react-router-dom"
+import HomePage from "./pages/HomePage"
+import BrowsePage from "./pages/BrowsePage"
+import DashboardPage from "./pages/DashboardPage"
+import PathPage from "./pages/PathPage"
+import TopicPage from "./pages/TopicPage"
+import Footer from "./components/Footer"
+import "./App.css"
 
-function App() {8
+function App() {
   return (
     <div className="app-shell">
       <header className="topbar">
@@ -27,7 +27,7 @@ function App() {8
               to="/"
               end
               className={({ isActive }) =>
-                isActive ? 'nav-link active' : 'nav-link'
+                isActive ? "nav-link active" : "nav-link"
               }
             >
               Home
@@ -36,7 +36,7 @@ function App() {8
             <NavLink
               to="/browse"
               className={({ isActive }) =>
-                isActive ? 'nav-link active' : 'nav-link'
+                isActive ? "nav-link active" : "nav-link"
               }
             >
               Browse
@@ -45,7 +45,7 @@ function App() {8
             <NavLink
               to="/path/ai-basics"
               className={({ isActive }) =>
-                isActive ? 'nav-link active' : 'nav-link'
+                isActive ? "nav-link active" : "nav-link"
               }
             >
               AI Basics Path
@@ -54,7 +54,7 @@ function App() {8
             <NavLink
               to="/dashboard"
               className={({ isActive }) =>
-                isActive ? 'nav-link active' : 'nav-link'
+                isActive ? "nav-link active" : "nav-link"
               }
             >
               My Learning
@@ -69,7 +69,6 @@ function App() {8
           <Route path="/browse" element={<BrowsePage />} />
           <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="/path/:id" element={<PathPage />} />
-          <Route path="/topic/:id" element={<TopicPage />} />
           <Route path="/topic/:topicId" element={<TopicPage />} />
         </Routes>
       </main>
