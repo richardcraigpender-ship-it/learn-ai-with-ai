@@ -35,23 +35,19 @@ function DashboardPage() {
     : 0
 
   return (
+    
     <div className="dashboard-page">
-      <PageHero eyebrow="Learner dashboard"
-        title={`Welcome back, ${user?.name || "Learner"}`}
-        description="Track your progress, jump back into your lessons, and keep building your AI skills one topic at a time."
-        actions={
-          <div className="dashboard-actions">
-            <Button to="/browse">Browse topics</Button>
-            <Button to="/path/ai-basics" variant="secondary">
-              View path
-            </Button>
-          </div>
-        }
-      />
+      <PageHero
+  eyebrow="Learner dashboard"
+  title={`Welcome back, ${user?.name || 'Learner'}`}
+  description="Track your progress, jump back into your lessons, and keep building your AI skills one topic at a time."
+>
+  <Button to="/browse">Browse topics</Button>
+  <Button to="/path/ai-basics" variant="secondary">View path</Button>
+</PageHero>
 
       <section className="dashboard-section">
         <SectionHeader
-          eyebrow="Profile"
           title="Your learner card"
           description="Edit your display details and set your current learning focus."
         />

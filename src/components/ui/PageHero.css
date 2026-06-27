@@ -2,6 +2,18 @@
   display: flex;
   flex-direction: column;
   gap: 16px;
+  width: 100%;
+  align-items: center;
+  text-align: center;
+}
+
+.page-hero-eyebrow {
+  margin: 0;
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #667085;
 }
 
 .page-hero-title {
@@ -12,10 +24,11 @@
 }
 
 .page-hero-description {
-  margin: 0;
+  margin: 0 auto;
   color: #4b5563;
   line-height: 1.65;
   max-width: 72ch;
+  text-align: center;
 }
 
 .page-hero-meta {
@@ -36,14 +49,29 @@
   border: 1px solid #e5e7eb;
 }
 
-.page-hero-actions {
+.page-hero__actions {
   display: flex;
-  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
   gap: 12px;
+  flex-wrap: wrap;
+  width: 100%;
+  margin-top: 16px;
+  position: relative;
+  z-index: 2;
+}
+
+.page-hero__actions > * {
+  flex: 0 0 auto;
 }
 
 @media (max-width: 640px) {
-  .page-hero-actions {
+  .page-hero__actions {
     flex-direction: column;
+    align-items: stretch;
+  }
+
+  .page-hero__actions > * {
+    width: 100%;
   }
 }

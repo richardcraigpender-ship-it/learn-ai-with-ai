@@ -1,37 +1,168 @@
-/* Topic.css - Topic card styles */
-
-.topic-card {
-  text-align: center;
-  max-width: var(--content-max);
-  margin-left: auto;
-  margin-right: auto;
-  align-items: center;
-  padding-left: 24px;
-  padding-right: 24px;
+.topic-page {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 24px 16px 40px;
 }
 
-.topic-card h1,
-.topic-card h2,
-.topic-card h3 {
-  text-wrap: balance;
+.topic-page__hero {
+  margin-bottom: 24px;
 }
 
-.topic-card p {
-  max-width: var(--text-max);
-  margin-left: auto;
-  margin-right: auto;
+.topic-page__hero-content {
+  padding: 22px 24px;
+  border-radius: 20px;
+  background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
+  color: #ffffff;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.18);
 }
 
-.topic-card-actions {
+.topic-page__eyebrow {
+  margin: 0 0 8px;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  opacity: 0.9;
+}
+
+.topic-page__title {
+  margin: 0;
+  font-size: clamp(1.8rem, 3vw, 2.5rem);
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.topic-page__description {
+  margin: 14px 0 0;
+  max-width: 70ch;
+  line-height: 1.65;
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.topic-page__meta {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
   gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 14px;
+  font-size: 0.95rem;
+  opacity: 0.95;
 }
 
-.topic-card-actions .ui-button {
+.topic-page__progress {
+  margin-top: 18px;
+}
+
+.topic-page__progress-bar {
   width: 100%;
-  min-width: 0;
+  height: 12px;
+  border-radius: 999px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.22);
+}
+
+.topic-page__progress-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #93c5fd 0%, #c4b5fd 100%);
+}
+
+.topic-page__progress-text {
+  display: inline-block;
+  margin-top: 8px;
+  font-size: 0.95rem;
+  opacity: 0.95;
+}
+
+.topic-page__lessons {
+  margin-top: 24px;
+}
+
+.topic-page__lessons-container {
+  margin-top: 16px;
+}
+
+.topic-page__navigation {
+  margin-top: 28px;
+}
+
+.topic-page__next-steps {
+  padding: 22px 24px;
+  border-radius: 20px;
+  background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
+  color: #ffffff;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.18);
+}
+
+.topic-page__next-title {
+  margin: 0;
+  font-size: 1.35rem;
+  font-weight: 700;
+}
+
+.topic-page__next-copy {
+  margin: 10px 0 0;
+  opacity: 0.95;
+  line-height: 1.6;
+}
+
+.topic-page__nav-buttons {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 16px;
+}
+
+.topic-page__nav-buttons > * {
   min-height: 44px;
-  justify-content: center;
+}
+
+.topic-page__next-steps .ui-button,
+.topic-page__next-steps a {
+  color: #ffffff;
+}
+
+.topic-page__not-found {
+  max-width: 720px;
+  margin: 48px auto;
+  padding: 24px;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .topic-page {
+    padding: 16px 14px 32px;
+  }
+
+  .topic-page__hero-content,
+  .topic-page__next-steps {
+    padding: 18px 18px;
+    border-radius: 18px;
+  }
+
+  .topic-page__nav-buttons {
+    flex-direction: column;
+  }
+
+  .topic-page__nav-buttons > * {
+    width: 100%;
+  }
+}
+
+.topic-page__next-steps .ui-button,
+.topic-page__next-steps a,
+.topic-page__next-steps button {
+  background: #ffffff;
+  color: #1f2937 !important;
+  border: 1px solid rgba(255, 255, 255, 0.65);
+  box-shadow: none;
+}
+
+.topic-page__next-steps .ui-button:hover,
+.topic-page__next-steps a:hover,
+.topic-page__next-steps button:hover {
+  background: #f8fafc;
+  color: #111827 !important;
+  border-color: rgba(255, 255, 255, 0.9);
+  box-shadow: none;
+  transform: none;
+  text-decoration: none;
 }
